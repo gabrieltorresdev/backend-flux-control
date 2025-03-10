@@ -10,13 +10,11 @@ import (
 
 func TestNewUser(t *testing.T) {
 	t.Run("should create a new user successfully", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "keycloak-123", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
+		user, err := NewUser("keycloak-123", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
 
 		assert.Nil(t, err)
 		assert.NotNil(t, user)
 		assert.NotEqual(t, uuid.Nil, user.ID())
-		assert.Equal(t, userID, user.UserID())
 		assert.Equal(t, "keycloak-123", user.KeycloakID())
 		assert.Equal(t, "John Doe", user.Name())
 		assert.Equal(t, "john@example.com", user.Email())
@@ -26,17 +24,16 @@ func TestNewUser(t *testing.T) {
 		assert.False(t, user.UpdatedAt().IsZero())
 	})
 
-	t.Run("should return error when user id is not provided", func(t *testing.T) {
-		user, err := NewUser(uuid.Nil, "keycloak-123", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
+	t.Run("should return error when keycloak id is not provided", func(t *testing.T) {
+		user, err := NewUser("", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
-		assert.Equal(t, "user id is required", err.Error())
+		assert.Equal(t, "keycloak id is required", err.Error())
 	})
 
 	t.Run("should return error when keycloak id is not provided", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
+		user, err := NewUser("", "John Doe", "john@example.com", "johndoe", enum.UserStatusActive)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
@@ -44,8 +41,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("should return error when name is not provided", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "keycloak-123", "", "john@example.com", "johndoe", enum.UserStatusActive)
+		user, err := NewUser("keycloak-123", "", "john@example.com", "johndoe", enum.UserStatusActive)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
@@ -53,8 +49,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("should return error when email is not provided", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "keycloak-123", "John Doe", "", "johndoe", enum.UserStatusActive)
+		user, err := NewUser("keycloak-123", "John Doe", "", "johndoe", enum.UserStatusActive)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
@@ -62,8 +57,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("should return error when username is not provided", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "keycloak-123", "John Doe", "john@example.com", "", enum.UserStatusActive)
+		user, err := NewUser("keycloak-123", "John Doe", "john@example.com", "", enum.UserStatusActive)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
@@ -71,8 +65,7 @@ func TestNewUser(t *testing.T) {
 	})
 
 	t.Run("should return error when status is invalid", func(t *testing.T) {
-		userID := uuid.New()
-		user, err := NewUser(userID, "keycloak-123", "John Doe", "john@example.com", "johndoe", "invalid")
+		user, err := NewUser("keycloak-123", "John Doe", "john@example.com", "johndoe", "invalid")
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)

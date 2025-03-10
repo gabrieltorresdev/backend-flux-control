@@ -10,7 +10,6 @@ import (
 
 type User struct {
 	id         uuid.UUID
-	userID     uuid.UUID
 	keycloakID string
 	name       string
 	email      string
@@ -21,7 +20,6 @@ type User struct {
 }
 
 func (u *User) ID() uuid.UUID           { return u.id }
-func (u *User) UserID() uuid.UUID       { return u.userID }
 func (u *User) KeycloakID() string      { return u.keycloakID }
 func (u *User) Name() string            { return u.name }
 func (u *User) Email() string           { return u.email }
@@ -30,10 +28,9 @@ func (u *User) Status() enum.UserStatus { return u.status }
 func (u *User) CreatedAt() time.Time    { return u.createdAt }
 func (u *User) UpdatedAt() time.Time    { return u.updatedAt }
 
-func NewUser(userID uuid.UUID, keycloakID string, name string, email string, username string, status enum.UserStatus) (*User, error) {
+func NewUser(keycloakID string, name string, email string, username string, status enum.UserStatus) (*User, error) {
 	user := &User{
 		id:         uuid.New(),
-		userID:     userID,
 		keycloakID: keycloakID,
 		name:       name,
 		email:      email,
@@ -52,10 +49,6 @@ func NewUser(userID uuid.UUID, keycloakID string, name string, email string, use
 }
 
 func (u *User) validate() error {
-	if u.userID == uuid.Nil {
-		return errors.New("user id is required")
-	}
-
 	if u.keycloakID == "" {
 		return errors.New("keycloak id is required")
 	}

@@ -1,0 +1,5 @@
+DB:
+  connection_string: "root:root@tcp(127.0.0.1:3306)/flux-control?charset=utf8mb4&parseTime=True&loc=Local"
+
+Server:
+  port: 8081
