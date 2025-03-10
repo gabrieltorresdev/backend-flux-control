@@ -27,16 +27,16 @@ func (t *Transaction) Description() string   { return t.description }
 func (t *Transaction) CreatedAt() time.Time  { return t.createdAt }
 func (t *Transaction) UpdatedAt() time.Time  { return t.updatedAt }
 
-func NewTransaction(categoryID uuid.UUID, userID uuid.UUID, amount float64, datetime time.Time, description string) (*Transaction, error) {
+func NewTransaction(id uuid.UUID, categoryID uuid.UUID, userID uuid.UUID, amount float64, datetime time.Time, description string, createdAt time.Time, updatedAt time.Time) (*Transaction, error) {
 	transaction := &Transaction{
-		id:          uuid.New(),
+		id:          id,
 		categoryID:  categoryID,
 		userID:      userID,
 		amount:      amount,
 		datetime:    datetime,
 		description: description,
-		createdAt:   time.Now(),
-		updatedAt:   time.Now(),
+		createdAt:   createdAt,
+		updatedAt:   updatedAt,
 	}
 
 	err := transaction.validate()

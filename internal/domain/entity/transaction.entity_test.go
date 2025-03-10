@@ -16,7 +16,7 @@ func TestNewTransaction(t *testing.T) {
 		datetime := time.Now()
 		description := "Grocery shopping"
 
-		transaction, err := NewTransaction(categoryID, userID, amount, datetime, description)
+		transaction, err := NewTransaction(categoryID, userID, uuid.Nil, amount, datetime, description, time.Time{}, time.Time{})
 
 		assert.Nil(t, err)
 		assert.NotNil(t, transaction)
@@ -32,7 +32,7 @@ func TestNewTransaction(t *testing.T) {
 
 	t.Run("should return error when category id is not provided", func(t *testing.T) {
 		userID := uuid.New()
-		transaction, err := NewTransaction(uuid.Nil, userID, 100.0, time.Now(), "description")
+		transaction, err := NewTransaction(uuid.Nil, userID, uuid.Nil, 100.0, time.Now(), "description", time.Time{}, time.Time{})
 
 		assert.NotNil(t, err)
 		assert.Nil(t, transaction)
@@ -41,7 +41,7 @@ func TestNewTransaction(t *testing.T) {
 
 	t.Run("should return error when user id is not provided", func(t *testing.T) {
 		categoryID := uuid.New()
-		transaction, err := NewTransaction(categoryID, uuid.Nil, 100.0, time.Now(), "description")
+		transaction, err := NewTransaction(categoryID, uuid.Nil, uuid.Nil, 100.0, time.Now(), "description", time.Time{}, time.Time{})
 
 		assert.NotNil(t, err)
 		assert.Nil(t, transaction)
@@ -52,12 +52,12 @@ func TestNewTransaction(t *testing.T) {
 		categoryID := uuid.New()
 		userID := uuid.New()
 
-		transaction, err := NewTransaction(categoryID, userID, 0, time.Now(), "description")
+		transaction, err := NewTransaction(categoryID, userID, uuid.Nil, 0, time.Now(), "description", time.Time{}, time.Time{})
 		assert.NotNil(t, err)
 		assert.Nil(t, transaction)
 		assert.Equal(t, "amount must be greater than 0", err.Error())
 
-		transaction, err = NewTransaction(categoryID, userID, -10.0, time.Now(), "description")
+		transaction, err = NewTransaction(categoryID, userID, uuid.Nil, -10.0, time.Now(), "description", time.Time{}, time.Time{})
 		assert.NotNil(t, err)
 		assert.Nil(t, transaction)
 		assert.Equal(t, "amount must be greater than 0", err.Error())
@@ -66,7 +66,7 @@ func TestNewTransaction(t *testing.T) {
 	t.Run("should return error when datetime is zero", func(t *testing.T) {
 		categoryID := uuid.New()
 		userID := uuid.New()
-		transaction, err := NewTransaction(categoryID, userID, 100.0, time.Time{}, "description")
+		transaction, err := NewTransaction(categoryID, userID, uuid.Nil, 100.0, time.Time{}, "description", time.Time{}, time.Time{})
 
 		assert.NotNil(t, err)
 		assert.Nil(t, transaction)
@@ -76,7 +76,7 @@ func TestNewTransaction(t *testing.T) {
 	t.Run("should create transaction with empty description", func(t *testing.T) {
 		categoryID := uuid.New()
 		userID := uuid.New()
-		transaction, err := NewTransaction(categoryID, userID, 100.0, time.Now(), "")
+		transaction, err := NewTransaction(categoryID, userID, uuid.Nil, 100.0, time.Now(), "", time.Time{}, time.Time{})
 
 		assert.Nil(t, err)
 		assert.NotNil(t, transaction)
